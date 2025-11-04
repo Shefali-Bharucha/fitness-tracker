@@ -1,0 +1,162 @@
+html, body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #e3f0ff 0%, #fdfbfb 100%);
+  width: 100vw;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(64,105,225,0.07), 0 1.5px 6px rgba(89,180,255,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 412px;
+}
+
+.main-heading {
+  font-size: 2.1rem;
+  color: #1b4c7e;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.2rem;
+}
+
+.subtext {
+  font-size: 1.1rem;
+  color: #5492c7;
+  margin-bottom: 1.1rem;
+  font-weight: 500;
+}
+
+.tip-box {
+  min-width: unset;
+  width: 100%;
+  min-height: 70px;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  padding: 1rem 1rem;
+  background: #e9f4fd;
+  border-radius: 10px;
+  color: #0e667a;
+  font-size: 1.09rem;
+  text-align: center;
+  box-shadow: 0 1.5px 6px rgba(44, 130, 181, 0.10);
+}
+
+button, .water-form button {
+  padding: 0.65rem 1.4rem;
+  background: linear-gradient(90deg,#3ba3f6 0%,#4fc3fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(82,156,206,0.10);
+  transition: background 0.25s, box-shadow 0.17s, transform 0.17s;
+}
+button:hover, .water-form button:hover {
+  background: linear-gradient(90deg,#36a2ee 0%,#2e80c5 80%);
+  box-shadow: 0 1.5px 9px rgba(82,156,206,0.13);
+  transform: translateY(-1.5px) scale(1.04);
+}
+
+.water-form {
+  width: 100%;
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.0rem 0 0.4rem 0;
+  justify-content: center;
+}
+
+.water-form input {
+  flex: 1 1 110px;
+  padding: 0.48rem 1rem;
+  border: 1.2px solid #b6ddfa;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f4faff;
+  transition: border 0.19s;
+}
+
+.water-form input:focus {
+  outline: none;
+  border: 1.7px solid #7bc3ef;
+}
+
+.water-message {
+  color: #2096e4;
+  font-size: 1.07rem;
+  margin-top: 0.4rem;
+  min-height: 1.45rem;
+  font-weight: 500;
+}
+
+.success-message {
+  font-size: 1.04rem;
+  margin-top: 0.4rem;
+  color: #2da298;
+  background: #e7fcf4;
+  padding: 0.48rem 1rem;
+  border-radius: 7px;
+  box-shadow: 0 0.5px 2.5px rgba(99,206,163,0.13);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s;
+  text-align: center;
+  position: relative;
+  min-height: 0;
+}
+
+.success-message.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 400px;
+  min-width: 0;
+  margin: 1.1rem auto 0.2rem;
+  display: flex;
+  justify-content: center;
+}
+
+#waterChart {
+  width: 100% !important;
+  height: 210px !important;
+  max-width: 100vw;
+  background: transparent;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 1.25rem 3.2vw;
+    max-width: 98vw;
+  }
+  .main-heading {
+    font-size: 1.54rem;
+  }
+  .subtext {
+    font-size: 0.98rem;
+  }
+  .tip-box, .water-form input, .chart-container {
+    font-size: 0.97rem;
+  }
+  #waterChart {
+    height:170px !important;
+  }
+}

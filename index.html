@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Fitness Tip</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 class="main-heading">💧 Daily Water Tracker</h1>
+    <p class="subtext">Stay Hydrated, Stay Healthy</p>
+    <div id="tip" class="tip-box">
+      <!-- Tip will appear here -->
+    </div>
+    <button id="newTipBtn">New Tip</button>
+    <form id="waterForm" class="water-form" autocomplete="off">
+      <input type="number" id="waterInput" step="0.01" min="0" placeholder="Liters of water" required>
+      <button type="submit">Add Water Intake</button>
+    </form>
+    <div id="waterMessage" class="water-message"></div>
+    <div class="chart-container">
+      <canvas id="waterChart"></canvas>
+    </div>
+    <div class="success-message" id="successMessage" style="display:none;"></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
