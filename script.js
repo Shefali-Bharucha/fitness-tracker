@@ -204,11 +204,149 @@ function showSuccessMsg(msg) {
   }, 1650);
 }
 
-// Prune to only keep latest 7 days data on each load/submit
+// ========== Hydration Daily Goal & Circular Progress ===========
+
+const DEFAULT_GOAL = 2.0;
+const GOAL_KEY = 'dailyGoal';
+
+/** Load user goal or fallback to default (2.0 L) */
+function getGoal() {
+  return parseFloat(localStorage.getItem(GOAL_KEY)) || DEFAULT_GOAL;
+}
+/** Save goal to localStorage, must be > 0.3L and < 10L */
+function setGoal(goal) {
+  if (goal < 0.3) goal = 0.3;
+  if (goal > 10) goal = 10;
+  localStorage.setItem(GOAL_KEY, goal);
+}
+
+// --- DOM refs ---
+const goalInput = document.getElementById('goalInput');
+const saveGoalBtn = document.getElementById('saveGoalBtn');
+const hydrationSummaryNode = document.getElementById('hydrationSummary');
+const celebrationNode = document.getElementById('celebration');
+const progressCircle = document.getElementById('progressCircle');
+const progressPercentNode = document.getElementById('progressPercent');
+
+// --- State/utility ---
+function getTodayIntake() {
+  const key = getDateKeyNDaysAgo(0);
+  return parseFloat(localStorage.getItem(key)) || 0;
+}
+
+/** Update hydration summary text and aria-live */
+function updateHydrationSummary() {
+  const goal = getGoal();
+  const intake = getTodayIntake();
+  const pct = Math.min(100, ((intake / goal) * 100) || 0);
+  hydrationSummaryNode.innerText = `You have consumed ${intake.toFixed(2)} L of ${goal.toFixed(2)} L (${pct.toFixed(0)}%).`;
+}
+
+/** Animate circular progress indicator based on today's intake vs. goal */
+function updateCircularProgress(animate=true) {
+  const goal = getGoal();
+  const intake = getTodayIntake();
+  let pct = Math.min(1, intake / goal || 0);
+  // SVG math
+  const radius = 40;
+  const circ = 2 * Math.PI * radius;
+  const offset = circ * (1 - pct);
+  // Animate stroke-dashoffset for smooth update
+  progressCircle.setAttribute('stroke-dasharray', circ);
+  if (animate) {
+    progressCircle.style.transition = 'stroke-dashoffset 0.95s cubic-bezier(.57,.81,.29,1.01)';
+  } else {
+    progressCircle.style.transition = 'none';
+  }
+  progressCircle.setAttribute('stroke-dashoffset', offset);
+  progressPercentNode.innerText = `${Math.round(pct * 100)}%`;
+}
+
+// --- Celebrate/confetti ---
+let didCelebrate = false;
+function showCelebrationIfGoal() {
+  const goal = getGoal();
+  const intake = getTodayIntake();
+  celebrationNode.innerHTML = '';
+  if (intake >= goal && goal > 0.1) {
+    celebrationNode.innerHTML = 'Goal achieved 🎉';
+    celebrationNode.style.display = 'block';
+    celebrationNode.classList.add('show');
+    confettiAnim();
+    didCelebrate = true;
+  } else {
+    celebrationNode.classList.remove('show');
+    setTimeout(() => { celebrationNode.style.display = 'none'; }, 600);
+    didCelebrate = false;
+  }
+}
+
+// Simple colored dot/circle confetti (vanilla CSS/JS)
+function confettiAnim() {
+  if (document.getElementById('confetti-box')) return; // No stacking
+  const box = document.createElement('div'); box.id = 'confetti-box';
+  box.style.position = 'fixed'; box.style.left = 0; box.style.top = 0; box.style.width = '100vw'; box.style.height = '100vh';
+  box.style.pointerEvents = 'none'; box.style.zIndex = 30;
+  for (let i = 0; i < 26; ++i) {
+    let d = document.createElement('div');
+    d.className = 'confetti-dot';
+    d.style.background = `hsl(${180+Math.random()*110},90%,${63+Math.random()*20}%)`;
+    d.style.position = 'absolute';
+    d.style.left = `${4 + Math.random() * 92}vw`;
+    d.style.top = `-${Math.random()*6}vh`;
+    d.style.width = d.style.height = `${0.61+Math.random()*0.36}rem`;
+    d.style.borderRadius = '50%';
+    d.style.opacity = 0.86+0.12*Math.random();
+    d.style.transform = `scale(${0.9+Math.random()*0.5})`;
+    d.style.transition = 'transform 0.6s';
+    box.appendChild(d);
+    setTimeout(()=>{
+      d.style.top = `${64+Math.random()*27}vh`; d.style.opacity = 0.18+Math.random()*0.36; d.style.transform += ' scale(0.91)';
+    }, Math.random()*380)
+  }
+  document.body.appendChild(box);
+  setTimeout(()=>{ box.remove(); }, 2100);
+}
+
+/** Set initial goal UI state */
+function setGoalInputDisplay() {
+  const g = getGoal();
+  goalInput.value = g.toFixed(2);
+}
+
+// On Save Goal
+saveGoalBtn.addEventListener('click', () => {
+  let val = parseFloat(goalInput.value);
+  if (!val || val < 0.3) val = DEFAULT_GOAL;
+  setGoal(val);
+  setGoalInputDisplay();
+  updateHydrationSummary();
+  updateCircularProgress();
+  showCelebrationIfGoal();
+  showSuccessMsg('Goal saved!');
+});
+
+goalInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); saveGoalBtn.click(); }
+});
+
+// Update all progress on new water entry
+function updateGoalUI(animate=true) {
+  setGoalInputDisplay();
+  updateHydrationSummary();
+  updateCircularProgress(animate);
+  showCelebrationIfGoal();
+}
+// --- END GOAL + CIRCLE ---
+
+// ========= EXISTING LOGIC - do not remove  ========= //
+
+// On load
 pruneOldWaterData();
 renderChartFromHistory();
+updateGoalUI(false);
 
-// --- Intake form submit logic ---
+// Intake form logic
 waterForm.addEventListener('submit', function(event) {
   event.preventDefault();
   const input = document.getElementById('waterInput');
@@ -224,10 +362,9 @@ waterForm.addEventListener('submit', function(event) {
   updateWaterMessage();
   input.value = '';
   renderChartFromHistory();
+  updateGoalUI();
   showSuccessMsg('Water intake updated!');
 });
 
 updateWaterMessage();
-
-// Show a tip on initial load
 showRandomTip();

@@ -14,6 +14,24 @@
       <!-- Tip will appear here -->
     </div>
     <button id="newTipBtn">New Tip</button>
+    <div class="goal-section">
+      <label for="goalInput" class="goal-label">Daily Goal (liters):</label>
+      <input type="number" step="0.01" min="0.5" id="goalInput" aria-label="Set daily water goal" />
+      <button id="saveGoalBtn">Save Goal</button>
+    </div>
+    <div class="progress-section">
+      <div class="circular-progress" id="circularProgress" aria-label="Hydration Progress" role="img">
+        <svg width="96" height="96" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="40" stroke="#d6eaff" stroke-width="12" fill="none" />
+          <circle id="progressCircle" cx="48" cy="48" r="40" stroke="#51aff8" stroke-width="12" fill="none"
+            stroke-linecap="round"
+            style="transition: stroke-dashoffset 1s cubic-bezier(.48,.77,.34,.89);" />
+        </svg>
+        <span id="progressPercent" class="progress-percent">0%</span>
+      </div>
+      <div id="hydrationSummary" class="hydration-summary" aria-live="polite"></div>
+      <div id="celebration" class="celebration" aria-live="polite" style="display:none;"></div>
+    </div>
     <form id="waterForm" class="water-form" autocomplete="off">
       <input type="number" id="waterInput" step="0.01" min="0" placeholder="Liters of water" required>
       <button type="submit">Add Water Intake</button>

@@ -142,6 +142,110 @@ button:hover, .water-form button:hover {
   background: transparent;
 }
 
+.goal-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+  padding: 0.7rem 0.9rem;
+  background: #eaf6ff;
+  border-radius: 11px;
+  box-shadow: 0 0.5px 3px #a4d2fa36;
+  width: 100%;
+  max-width: 390px;
+}
+.goal-label {
+  font-size: 0.99rem;
+  color: #2886bf;
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+#goalInput {
+  padding: 0.43rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #99caf2;
+  font-size: 1.03rem;
+  width: 5.7rem;
+  background: #f8fcff;
+  margin-right: 0.2rem;
+  transition: border 0.14s;
+}
+#goalInput:focus {
+  border-color: #52b6fd;
+  outline: none;
+}
+#saveGoalBtn {
+  padding: 0.46rem 1.15rem;
+  font-size: 1rem;
+}
+
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.7rem;
+  width: 100%;
+  gap: 0.4rem;
+}
+.circular-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 0.18rem;
+  background: none;
+}
+.progress-percent {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  color: #2795e2;
+  font-weight: 800;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: 0.01em;
+}
+.hydration-summary {
+  font-size: 1.08rem;
+  color: #2074b3;
+  font-weight: 600;
+  margin: 0.19rem 0 0.44rem 0;
+  min-height: 1.35rem;
+  text-align: center;
+}
+.celebration {
+  font-size: 1.13rem;
+  color: #19b465;
+  font-weight: 700;
+  background: #e9fbe6e6;
+  border-radius: 8px;
+  margin-top: 0.18rem;
+  margin-bottom: 0.08rem;
+  padding: 0.25rem 0.7rem;
+  box-shadow: 0 0.5px 3px #19b46521;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transition: opacity 0.7s;
+  pointer-events: none;
+  text-align: center;
+}
+.celebration.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confetti-dot {
+  pointer-events: none;
+  will-change: top, opacity, transform;
+  transition: top 1.65s cubic-bezier(.3,.97,.48,.99), opacity 0.95s cubic-bezier(.6,.37,.84,.74), transform 1.18s;
+  z-index: 1;
+}
+
 @media (max-width: 700px) {
   .container {
     padding: 1.25rem 3.2vw;
